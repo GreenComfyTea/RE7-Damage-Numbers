@@ -42,25 +42,12 @@ local os = os;
 
 this.list = {};
 
--- local enemy_controller_type_def = sdk.find_type_definition("app.EnemyController");
--- local on_hit_damage_method = enemy_controller_type_def:get_method("HitController_OnHitDamage");
--- local get_hit_point_method = enemy_controller_type_def:get_method("get_HitPoint");
+local enemy_action_controller_type_def = sdk.find_type_definition("app.EnemyActionController");
+local on_give_damage_method = enemy_action_controller_type_def:get_method("giveDamage");
 
---poolDamage(via.physics.CollisionInfo, app.Collision.AttackUserData, app.Collision.DamageUserData)
-
-local hit_controller_type_def = sdk.find_type_definition("app.Collision.HitController");
-local sum_up_damage_method = hit_controller_type_def:get_method("sumupDamage");
-
-local hit_info_type_def = sdk.find_type_definition("app.Collision.HitInfo");
-local get_distance_sq_method = hit_info_type_def:get_method("get_DistanceSq");
-local get_attack_user_data_method = hit_info_type_def:get_method("get_AttackUserData");
-local get_position_method = hit_info_type_def:get_method("get_Position");
-
-local damage_value_type_def = sdk.find_type_definition("app.Collision.HitController.DamageValue");
-local damage_field = damage_value_type_def:get_field("Damage");
-
-
-
+local damage_info_type_def = sdk.find_type_definition("app.Collision.HitController.DamageInfo");
+local get_position_method = damage_info_type_def:get_method("get_Position");
+local damage_field = damage_info_type_def:get_field("Damage");
 
 function this.new(damage, hit_position)
 	local cached_config = config.current_config;
@@ -144,6 +131,10 @@ function this.tick()
 		return;
 	end
 
+	if not cached_config.render_when_any_menu_is_opened and game_handler.game.is_menu_opened then
+		return;
+	end
+
 	if player_handler.player.is_aiming then
 		if not cached_config.render_when_aiming then
 			return;
@@ -187,28 +178,13 @@ function this.tick()
 	end
 end
 
-function this.on_damage(damage_value, hit_info)
-	if damage_value == nil then
-		error_handler.report("damage_handler.on_damage", "No DamageValue");
+function this.on_damage(damage_info)
+	if damage_info == nil then
+		error_handler.report("damage_handler.on_damage", "No DamageInfo");
 		return;
 	end
 
-	if hit_info == nil then
-		error_handler.report("damage_handler.on_damage", "No HitInfo");
-		return;
-	end
-
-	local distance_Squared = get_distance_sq_method:call(hit_info)
-	if distance_Squared == nil then
-		error_handler.report("damage_handler.on_damage", "No istanceSquared");
-		return;
-	end
-
-	if distance_Squared < 0.3 then
-		return;
-	end
-
-	local damage = damage_field:get_data(damage_value);
+	local damage = damage_field:get_data(damage_info);
 	if damage == nil then
 		error_handler.report("damage_handler.on_damage", "No Damage");
 		return;
@@ -218,7 +194,7 @@ function this.on_damage(damage_value, hit_info)
 		return;
 	end
 
-	local position = get_position_method:call(hit_info);
+	local position = get_position_method:call(damage_info);
 	if position == nil then
 		error_handler.report("damage_handler.on_damage", "No Position");
 		return;
@@ -237,11 +213,11 @@ function this.init_module()
 	game_handler = require("Damage_Numbers.game_handler");
 	error_handler = require("Damage_Numbers.error_handler");
 	
-	sdk.hook(sum_up_damage_method, function(args)
-		local hit_controller = sdk.to_managed_object(args[2]);
-		local damage_value = sdk.to_managed_object(args[3]);
-		local hit_info = sdk.to_managed_object(args[4]);
-		this.on_damage(damage_value, hit_info);
+	sdk.hook(on_give_damage_method, function(args)
+		local enemy_action_controller = sdk.to_managed_object(args[2]);
+		local damage_info = sdk.to_managed_object(args[3]);
+
+		this.on_damage(damage_info);
 
 	end, function(retval)
 		return retval;

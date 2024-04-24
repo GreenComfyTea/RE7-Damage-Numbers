@@ -36,8 +36,7 @@ local os = os;
 
 this.player = {};
 this.player.is_aiming = false;
-
-local is_initialized = false;
+this.player.is_guarding = false;
 
 -- local player_manager_type_def = sdk.find_type_definition("app.PlayerManager");
 -- local get_current_position_method = player_manager_type_def:get_method("get_CurrentPosition");

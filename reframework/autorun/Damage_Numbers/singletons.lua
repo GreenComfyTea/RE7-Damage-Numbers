@@ -35,13 +35,16 @@ local os = os;
 
 local game_manager_name = "app.GameManager";
 local inventory_manager_name = "app.InventoryManager";
+local menu_manager_name = "app.MenuManager";
 
 this.game_manager = nil;
 this.inventory_manager = nil;
+this.menu_manager = nil;
 
 function this.update()
 	this.update_game_manager();
 	this.update_inventory_manager();
+	this.update_menu_manager();
 end
 
 function this.update_game_manager()
@@ -61,6 +64,17 @@ function this.update_inventory_manager()
 
 	return this.inventory_manager;
 end
+
+function this.update_menu_manager()
+	this.menu_manager = sdk.get_managed_singleton(menu_manager_name);
+	if this.menu_manager == nil then
+		error_handler.report("[singletons.update_menu_manager] No MenuManager");
+	end
+
+	return this.menu_manager;
+end
+
+local menu_manager = sdk.get_managed_singleton("app.MenuManager");
 
 function this.init_module()
 	customization_menu = require("Damage_Numbers.customization_menu");

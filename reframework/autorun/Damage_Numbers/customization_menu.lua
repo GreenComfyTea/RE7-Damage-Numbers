@@ -183,8 +183,12 @@ function this.draw()
 			cached_config.settings.render_during_cutscenes);
 		config_changed = config_changed or changed;
 
-		changed, cached_config.settings.render_when_paused = imgui.checkbox("Render when Paused",
-			cached_config.settings.render_when_paused);
+		changed, cached_config.settings.render_when_game_timer_is_paused = imgui.checkbox("Render when Game Timer Is Paused",
+			cached_config.settings.render_when_game_timer_is_paused);
+		config_changed = config_changed or changed;
+
+		changed, cached_config.settings.render_when_any_menu_is_opened = imgui.checkbox("Render when Any Menu Is Opened",
+			cached_config.settings.render_when_any_menu_is_opened);
 		config_changed = config_changed or changed;
 		
 		imgui.end_rect(5);

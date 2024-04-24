@@ -35,6 +35,7 @@ local os = os;
 
 this.game = {};
 this.game.is_paused = false;
+this.game.is_menu_opened = false;
 this.game.is_cutscene_playing = false;
 
 local is_initialized = false;
@@ -54,8 +55,12 @@ local running_event_controllers_field = game_event_manager_type_def:get_field("R
 local running_event_controllers_list = running_event_controllers_field:get_type();
 local running_event_controllers_list_get_count_method = running_event_controllers_list:get_method("get_Count");
 
+local menu_manager_type_def = sdk.find_type_definition("app.MenuManager");
+local is_exist_stack_open_menu_method = menu_manager_type_def:get_method("isExistStackOpenMenu");
+
 function this.update()
 	this.update_is_cutscene();
+	this.update_is_menu_opened();
 end
 
 function this.update_is_cutscene()
@@ -88,6 +93,22 @@ function this.update_is_cutscene()
 	end
 
 	this.game.is_cutscene_playing = count ~= 0;
+end
+
+function this.update_is_menu_opened()
+	local menu_manager = singletons.menu_manager;
+	if menu_manager == nil then
+		error_handler.report("game_handler.update_is_menu_opened", "No MenuManager");
+		return;
+	end
+
+	local is_exist_stack_open_menu =  is_exist_stack_open_menu_method:call(menu_manager);
+	if is_exist_stack_open_menu == nil then
+		error_handler.report("game_handler.update_is_menu_opened", "No IsExistStackOpenMenu");
+		return;
+	end
+
+	this.game.is_menu_opened = is_exist_stack_open_menu;
 end
 
 function this.init()

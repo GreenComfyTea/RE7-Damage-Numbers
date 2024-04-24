@@ -141,10 +141,3 @@ end);
 ----------------------------D2D------------------------------
 
 time.init_global_timers();
-
-re.on_frame(function()
-	if xy ~= nil then
-		draw.text(tostring(xy), 51, 51, 0xFF000000);
-		draw.text(tostring(xy), 50, 50, 0xFFFFFFFF);
-	end
-end);

@@ -78,8 +78,9 @@ function this.init()
 
 			use_d2d_if_available = true,
 
-			render_during_cutscenes = false,
-			render_when_paused = false,
+			render_during_cutscenes = true,
+			render_when_game_timer_is_paused = true,
+			render_when_any_menu_is_opened = false,
 
 			render_when_normal = true,
 			render_when_aiming = true,
