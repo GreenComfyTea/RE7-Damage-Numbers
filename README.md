@@ -118,7 +118,7 @@
 
 <p align="center">
 	<a>
-		<img align="center" src="https://user-images.githubusercontent.com/30152047/233308742-36664886-d310-4c1c-a0de-c4821dc6be5d.png" />
+		<img align="center" src="https://github.com/GreenComfyTea/RE7-Damage-Numbers/assets/30152047/6fb46bad-c2cc-4c3c-92c8-683c65523a94" />
 	</a>
 </p>
 
