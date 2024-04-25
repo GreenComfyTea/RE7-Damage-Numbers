@@ -126,7 +126,7 @@
 * **[Nexus Mods](https://nexusmods.com/residentevil7/mods/133)**
 
 # Requirements
-1. **[REFramework](https://nexusmods.com/residentevil7/mods/80) (**[Nightly](https://github.com/praydog/REFramework-nightly/releases)** v1.5.4+);
+1. **[REFramework](https://nexusmods.com/residentevil7/mods/80)** (**[Nightly](https://github.com/praydog/REFramework-nightly/releases)** v1.5.4+);
 2. **[REFramework Direct2D](https://nexusmods.com/residentevil7/mods/131)** (v1.0.1+).
 
 # How to install:
